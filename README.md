@@ -53,4 +53,4 @@ facenet.fit(x=X, y=y, epochs=10, batch_size=128)
 face = np.random.rand(160, 160, 3)
 features = facenet.face_encodings(face)
 print(features.shape)
-```python
+```
