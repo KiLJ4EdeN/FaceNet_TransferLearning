@@ -31,7 +31,7 @@ print(X.shape)
 print(y.shape)
 
 # select any number of layers and define the number of classes.
-# input shape should be (160, 160, 3). OW there might be negative dimension errors with small images.
+# input shape should be (160, 160, 3). Minumum is (75, 75, 3).
 facenet = FaceNet(input_shape=(160, 160, 3), classes=10, included_layers=1)
 print(facenet.summary())
 ```
