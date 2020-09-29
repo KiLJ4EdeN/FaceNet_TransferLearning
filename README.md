@@ -1,5 +1,6 @@
 # FaceNet_TransferLearning
-Transfer weights with keras and facenet.
+Leverage FaceNet weights with keras and facenet.
+Suitable for face related methods like expression detection, pose, etc...
 
 ## Requirements
 ```bash
