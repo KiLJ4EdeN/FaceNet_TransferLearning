@@ -12,30 +12,40 @@ from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.layers import add
 from tensorflow.keras import backend as K
 
+
 class FaceNet(object):
-  def __init__(self, classes=10, included_layers=1):
+  def __init__(self, input_shape=(160, 160, 3), classes=10, included_layers=1):
     # load model
-    model = self.load_model(path='facenet_weights.h5')
-    image_input = Input(shape=(160, 160, 3))
+    self.input_shape = input_shape
+    self.pred_model = self.load_model(path='facenet_weights.h5')
+    image_input = Input(shape=self.input_shape)
     # reduce trainability     
-    for layer in model.layers[:-included_layers]:
+    for layer in self.pred_model.layers[:-included_layers]:
       layer.trainable = False
-    print(f'Training {included_layers} Layers from {len(model.layers)}...') 
     # add classification layers
-    last_layer = model(image_input)
+    last_layer = self.pred_model(image_input)
     if classes > 1:
       act = 'softmax'
     else:
       act = 'sigmoid'
     out = Dense(classes, activation=act, name='output_layer')(last_layer)
-    self.model = Model(inputs=image_input, outputs=out)
+    self.main_model = Model(inputs=image_input, outputs=out)
+
+  def summary(self):
+    return self.main_model.summary()
+  
+  def compile(self, **kwargs):
+    self.main_model.compile(**kwargs)
+
+  def fit(self, **kwargs):
+    history = self.main_model.fit(**kwargs)
 
   @staticmethod
   def scaling(x, scale):
     return x * scale
 
   def InceptionResNetV2(self):
-    inputs = Input(shape=(160, 160, 3))
+    inputs = Input(shape=self.input_shape)
     x = Conv2D(32, 3, strides=2, padding='valid', use_bias=False, name= 'Conv2d_1a_3x3') (inputs)
     x = BatchNormalization(axis=3, momentum=0.995, epsilon=0.001, scale=False, name='Conv2d_1a_3x3_BatchNorm')(x)
     x = Activation('relu', name='Conv2d_1a_3x3_Activation')(x)
@@ -543,13 +553,7 @@ class FaceNet(object):
 
     return model
 
-  @staticmethod
-  def load_model(path='facenet_weights.h5'):
-    model = InceptionResNetV2()
+  def load_model(self, path='facenet_weights.h5'):
+    model = self.InceptionResNetV2()
     model.load_weights('facenet_weights.h5')
     return model
-
-
-# example usage:
-# fcnet = FaceNet(classes=10, included_layers=1)
-# print(fcnet.model.summary())
