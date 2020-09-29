@@ -11,6 +11,8 @@ from tensorflow.keras.layers import Lambda
 from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.layers import add
 from tensorflow.keras import backend as K
+import numpy as np
+import cv2
 
 
 class FaceNet(object):
@@ -31,6 +33,13 @@ class FaceNet(object):
     out = Dense(classes, activation=act, name='output_layer')(last_layer)
     self.main_model = Model(inputs=image_input, outputs=out)
 
+  def face_encodings(self, face):
+    face = np.array(face, dtype=np.uint8)
+    face = cv2.resize(face, (160, 160))
+    face = np.expand_dims(face, axis=0)
+    pred = self.pred_model.predict(face)
+    return pred[0]
+  
   def summary(self):
     return self.main_model.summary()
   
