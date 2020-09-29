@@ -18,7 +18,7 @@ cd FaceNet_TransferLearning
 
 # 1 - Training:
 
-## Create the FaceNet model and a dataset.
+## Create the FaceNet Model and a Dummy Dataset.
 ```python
 # train.py
 from facenet import FaceNet
@@ -40,7 +40,7 @@ facenet = FaceNet(input_shape=(160, 160, 3), classes=10, included_layers=1)
 print(facenet.summary())
 ```
 
-## Fit the model.
+## Fit the Model.
 ```python
 facenet.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
 facenet.fit(x=X, y=y, epochs=10, batch_size=128)
