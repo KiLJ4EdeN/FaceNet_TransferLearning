@@ -3,16 +3,20 @@ Transfer weights with keras and facenet.
 
 # Requirements
 ```bash
+pip3 install numpy
 pip3 install tensorflow
+pip3 install opencv-contrib-python
 ```
 
-# Usage:
+# Usages:
 
 ## Clone the Repo:
 ```bash
 git clone https://github.com/KiLJ4EdeN/FaceNet_TransferLearning
 cd FaceNet_TransferLearning
 ```
+
+# 1 - Training:
 
 ## Create the FaceNet model and a dataset.
 ```python
@@ -41,3 +45,12 @@ print(facenet.summary())
 facenet.compile(loss='categorical_crossentropy', metrics=['accuracy'], optimizer='adam')
 facenet.fit(x=X, y=y, epochs=10, batch_size=128)
 ```
+
+
+# 2 - Facial Feature Extraction:
+```python
+# perform feature extraction from a face, (should be cropped with detection algorithms.)
+face = np.random.rand(160, 160, 3)
+features = facenet.face_encodings(face)
+print(features.shape)
+```python
