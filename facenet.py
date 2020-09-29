@@ -34,11 +34,11 @@ class FaceNet(object):
   def summary(self):
     return self.main_model.summary()
   
-  def compile(self, **kwargs):
-    self.main_model.compile(**kwargs)
+  def compile(self, *args, **kwargs):
+    self.main_model.compile(*args, **kwargs)
 
-  def fit(self, **kwargs):
-    history = self.main_model.fit(**kwargs)
+  def fit(self, *args, **kwargs):
+    history = self.main_model.fit(*args, **kwargs)
 
   @staticmethod
   def scaling(x, scale):
