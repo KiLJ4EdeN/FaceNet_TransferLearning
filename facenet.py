@@ -565,4 +565,4 @@ class FaceNet(object):
   def load_model(self, path='facenet_weights.h5'):
     model = self.InceptionResNetV2()
     model.load_weights('facenet_weights.h5')
-    return model
+    return model 
